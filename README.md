@@ -1,6 +1,8 @@
 yahoo-group-archiver
 ====================
 
+This fork adds the ability to resume the downloads from where it failed (add --resume switch to the ./yahoo.py command). It also silently handles errors downloading messages/files so that it doesn't crash the script due to the random errors.
+
 **Note:** Yahoo now have a ["Get My Data" tool](https://groups.yahoo.com/neo/getmydata)
 available, which may provide an alternative to this tool, although it was not working at the time
 of writing.
