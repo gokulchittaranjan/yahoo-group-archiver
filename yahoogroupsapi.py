@@ -4,16 +4,17 @@ import json
 import functools
 import time
 
-class YahooGroupsAPI:
-    BASE_URI="https://groups.yahoo.com/api"
-    LOGIN_URI="https://login.yahoo.com/"
 
-    API_VERSIONS={
-            'messages': 'v1',
-            'files': 'v2',
-            'albums': 'v2', # v3 is available, but changes where photos are located in json
-            'database': 'v1'
-            }
+class YahooGroupsAPI:
+    BASE_URI = "https://groups.yahoo.com/api"
+    LOGIN_URI = "https://login.yahoo.com/"
+
+    API_VERSIONS = {
+        'messages': 'v1',
+        'files': 'v2',
+        'albums': 'v2',  # v3 is available, but changes where photos are located in json
+        'database': 'v1'
+    }
 
     s = None
 
@@ -47,7 +48,10 @@ class YahooGroupsAPI:
 
     def get_file(self, url):
         r = self.s.get(url)
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except Exception:
+            return "ERROR" + r.content
         return r.content
 
     def download_file(self, url, f, **args):
@@ -66,7 +70,8 @@ class YahooGroupsAPI:
 
     def get_json(self, target, *parts, **opts):
         """Get an arbitrary endpoint and parse as json"""
-        uri_parts = [self.BASE_URI, self.API_VERSIONS[target], 'groups', self.group, target]
+        uri_parts = [self.BASE_URI, self.API_VERSIONS[
+            target], 'groups', self.group, target]
         uri_parts = uri_parts + map(str, parts)
         uri = "/".join(uri_parts)
 
@@ -80,4 +85,3 @@ class YahooGroupsAPI:
             print "Exception raised on uri: " + r.request.url
             print r.content
             raise e
-
